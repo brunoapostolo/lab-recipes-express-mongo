@@ -9,9 +9,12 @@ const Schema = mongoose.Schema;
 */
 
 const clientSchema = new Schema({
-  // TODO: write the schema
+  name: { type: String },
+  email: { type: String, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ },
+  favorites: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  dislikes: [{ type: Schema.Types.ObjectId, ref: "Nada" }],
 });
 
-const ClientModel = mongoose.model("Client", clientSchema);
+const ClientModel = mongoose.model("ClientModel", clientSchema);
 
 module.exports = ClientModel;
