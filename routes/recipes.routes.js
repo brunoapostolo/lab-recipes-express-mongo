@@ -42,7 +42,7 @@ router.get("/all/:idRecepie", async (req, res) => {
 //4º rota: Criar várias receitas de uma só vez
 router.post("/createmany", async (req, res) => {
   try {
-    const newReceita = await RecipeModel.insertMany({ ...req.body });
+    const newReceita = await RecipeModel.insertMany([...req.body]);
     return res.status(200).json(newReceita);
   } catch (error) {
     console.log(error);
