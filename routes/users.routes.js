@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ClientModel = require("../models/User.model");
+const RecipeModel = require("../models/Recipe.model");
 //1º rota: Criar um user
 router.post("/createuser", async (req, res) => {
   try {
@@ -39,6 +40,9 @@ router.post("/create/:idReceita/:iddousuario", async (req, res) => {
         favorites: idReceita,
       },
     });
+    await RecipeModel.findByIdAndUpdate(idReceita, {
+      $inc: { favorites: 1 },
+    });
     return res.status(200).json(req.body);
   } catch (error) {
     console.log(error);
@@ -55,6 +59,9 @@ router.post(
         $push: {
           dislikes: iddessaReceita,
         },
+      });
+      await RecipeModel.findByIdAndUpdate(iddessaReceita, {
+        $inc: { deslikes: 1 },
       });
       return res.status(200).json(req.body);
     } catch (error) {
@@ -74,6 +81,9 @@ router.delete(
           favorites: idreceitafavorita,
         },
       });
+      await RecipeModel.findByIdAndUpdate(idreceitafavorita, {
+        $inc: { favorites: -1 },
+      });
       return res.status(200).json("tudo Sérgio");
     } catch (error) {
       console.log(error);
@@ -91,6 +101,9 @@ router.delete(
         $pull: {
           dislikes: iddodeslike,
         },
+      });
+      await RecipeModel.findByIdAndUpdate(iddodeslike, {
+        $inc: { deslikes: -1 },
       });
       return res.status(200).json("LEGAL");
     } catch (error) {

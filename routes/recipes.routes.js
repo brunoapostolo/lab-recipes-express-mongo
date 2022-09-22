@@ -4,6 +4,7 @@ const router = express.Router();
 //Importe o express e instancie o Router aqui
 
 // Importe os models aqui
+const ClientModel = require("../models/User.model");
 const RecipeModel = require("../models/Recipe.model");
 
 //1º rota: Criar uma receita
@@ -50,9 +51,27 @@ router.post("/createmany", async (req, res) => {
   }
 });
 //6º rota: Acessar todos os usuários que favoritaram essa receita
-
+router.get("/showusersfavorited/:idReceita", async (req, res) => {
+  try {
+    const { idReceita } = req.params;
+    const soFavoritos = await ClientModel.find({ favorites: idReceita });
+    return res.status(200).json(soFavoritos);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("ERRO");
+  }
+});
 //7º rota: Acessar todos os usuários que deram dislike essa receita
 
+router.get("/showusersdesliked/:idpppReceita", async (req, res) => {
+  try {
+    const { idpppReceita } = req.params;
+    const soDeslikes = await ClientModel.find({ dislikes: idpppReceita });
+    return res.status(200).json(soDeslikes);
+  } catch (error) {
+    return res.status(400).json("ERRO");
+  }
+});
 //!5º rota: Deletar uma receita pelo seu ID - retira-la da array de favorites e dislikes dos USERS
 
 //Não se esqueça de exportar o router!
