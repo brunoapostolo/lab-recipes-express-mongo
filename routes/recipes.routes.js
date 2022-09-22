@@ -74,5 +74,28 @@ router.get("/showusersdesliked/:idpppReceita", async (req, res) => {
 });
 //!5º rota: Deletar uma receita pelo seu ID - retira-la da array de favorites e dislikes dos USERS
 
+router.delete(
+  "/deletandoareceitaedepoisorestinho/:outroidReceita",
+  async (req, res) => {
+    try {
+      const { outroidReceita } = req.params;
+      const receitadeletada = await RecipeModel.findByIdAndDelete(
+        outroidReceita
+      );
+      await ClientModel.updateMany(
+        {
+          $or: [{ favorites: outroidReceita }, { dislikes: outroidReceita }],
+        },
+        { $pull: { favorites: outroidReceita, dislikes: outroidReceita } }
+      );
+
+      return res.status(200).json(receitadeletada);
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json("epa");
+    }
+  }
+);
+
 //Não se esqueça de exportar o router!
 module.exports = router;
