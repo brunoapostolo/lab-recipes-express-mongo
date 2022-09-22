@@ -11,8 +11,8 @@ const Schema = mongoose.Schema;
 const clientSchema = new Schema({
   name: { type: String },
   email: { type: String, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ },
-  favorites: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-  dislikes: [{ type: Schema.Types.ObjectId, ref: "Nada" }],
+  favorites: [{ type: Schema.Types.ObjectId, ref: "RecipeModel" }],
+  dislikes: [{ type: Schema.Types.ObjectId, ref: "RecipeModel" }],
 });
 
 const ClientModel = mongoose.model("ClientModel", clientSchema);

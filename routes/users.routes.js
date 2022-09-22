@@ -31,10 +31,64 @@ router.get("/allusers/:userID", async (req, res) => {
   }
 });
 //4º Adicionar uma receita na array de favorites
-
+router.post("/create/:idReceita", async (req, res) => {
+  try {
+    const { idReceita } = req.params;
+    await ClientModel.findByIdAndUpdate(idReceita, {
+      $push: {
+        favorites: idReceita,
+      },
+    });
+    return res.status(200).json(req.body);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("ERRO");
+  }
+});
 //5º Adicionar uma receita na array de deslikes
-
+router.post("/dandodeslike/:iddessaReceita", async (req, res) => {
+  try {
+    const { iddessaReceita } = req.params;
+    await ClientModel.findByIdAndUpdate(iddessaReceita, {
+      $push: {
+        dislikes: iddessaReceita,
+      },
+    });
+    return res.status(200).json(req.body);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("erro");
+  }
+});
 //6º Remover uma receita na array de favorite
-
+router.delete("/deletando/favoritos/:idFavorito", async (req, res) => {
+  try {
+    const { idFavorito } = req.params;
+    await ClientModel.findByIdAndUpdate(idFavorito, {
+      $pull: {
+        favorites: idFavorito,
+      },
+    });
+    return res.status(200).json("tudo Sérgio");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("Tudo errado");
+  }
+});
 //7º Remover uma receita na array de deslikes
+router.delete("/deletando/deslikes/:iddodeslike", async (req, res) => {
+  try {
+    const { iddodeslike } = req.params;
+    await ClientModel.findByIdAndUpdate(iddodeslike, {
+      $pull: {
+        dislikes: iddodeslike,
+      },
+    });
+    return res.status(200).json("LEGAL");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+});
+
 module.exports = router;
